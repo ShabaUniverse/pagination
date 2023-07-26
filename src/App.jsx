@@ -29,11 +29,11 @@ function App() {
   };
 
   const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((current) => current + 1);
   };
 
   const prevPage = () => {
-    setCurrentPage((prev) => prev - 1);
+    setCurrentPage((current) => current - 1);
   };
 
   return (

@@ -11,7 +11,7 @@ const Pagination = ({ countriesPerPage, totalCountries, paginate }) => {
       {pageNumbers.map((number) => (
         <p
           key={number}
-          className="mx-1 font-semibold border border-blue-500 p-1 text-blue-500 cursor-pointer hover:bg-slate-300"
+          className="mx-1 font-semibold border border-blue-500 p-1 cursor-pointer text-white hover:bg-slate-300"
           onClick={() => paginate(number)}>
           {number}
         </p>

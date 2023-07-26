@@ -9,7 +9,7 @@ const Countries = ({ currentCountry , loading }) => {
       <div className="country-displayer">
         {currentCountry.map((country, i) => (
             <div className="element flex justify-start items-center mt-2 border border-gray-300 p-1">
-                <p className="mr-2">{country.name.common}</p>
+                <p className="mr-2 text-white">{country.name.common}</p>
                 <img src={country.flags.png} alt="flag" className=" w-8 h-6"/>
             </div>
         ))}
