@@ -1,19 +1,24 @@
 import React from "react";
 
-const Countries = ({ currentCountry , loading }) => {
+const Countries = ({ countries, loading }) => {
+
+  //if loading is true, then display this
   if (loading) {
-    return <h2>Loading</h2>;
-  }
-  return (
-    <div className="countries">
-      <div className="country-displayer">
-        {currentCountry.map((country, i) => (
-            <div className="element flex justify-start items-center mt-2 border border-gray-300 p-1">
-                <p className="mr-2 text-white">{country.name.common}</p>
-                <img src={country.flags.png} alt="flag" className=" w-8 h-6"/>
-            </div>
-        ))}
+    return (
+      <div className="loading">
+        <p>Loading..</p>
       </div>
+    );
+  }
+  //otherwise, display this
+  return (
+    <div className="countries h-96">
+      {countries.map((item, i) => (
+        <div className="country flex justify-start items-center" key={i}>
+          <p className="mr-3">{item.name.common}</p>
+          <img src={item.flags.png} alt="flags" className="w-7 h-5" />
+        </div>
+      ))}
     </div>
   );
 };

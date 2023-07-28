@@ -1,19 +1,29 @@
 import React from "react";
 
-const Pagination = ({ countriesPerPage, totalCountries, paginate }) => {
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalCountries / countriesPerPage); i++) {
-    pageNumbers.push(i);
+const Pagination = ({ quantityOfPages, setCurrentPage }) => {
+
+  // variables to push quantity of pages
+  const pages = [];
+
+  // assing values to pages variable
+  for (let i = 1; i <= quantityOfPages; i++) {
+    pages.push(i);                              // array [1,2,3,4]
+  }
+
+  // on click on number, it sets that number as number of page
+  const changePage = (number) => {
+    setCurrentPage(number)
   }
 
   return (
-    <div className="pagination flex justify-center items-center my-8">
-      {pageNumbers.map((number) => (
+    // break pages array into pieces
+    <div className="pagination flex justify-center items-center my-5">
+      {pages.map((item, i) => (
         <p
-          key={number}
-          className="mx-1 font-semibold border border-blue-500 p-1 cursor-pointer text-white hover:bg-slate-300"
-          onClick={() => paginate(number)}>
-          {number}
+          className="text-lg text-white mx-1 w-6 text-center bg-blue-500 cursor-pointer"
+          key={i}
+          onClick={() => changePage(item)}>
+          {item}
         </p>
       ))}
     </div>

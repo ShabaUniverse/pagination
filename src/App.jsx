@@ -3,60 +3,87 @@ import axios from "axios";
 import "./App.css";
 import Countries from "./components/Countries";
 import Pagination from "./components/Pagination";
+import ByLetter from "./components/ByLetter";
 
 function App() {
+  // states
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [countriesPerPage] = useState(10);
+  const [letter, setLetter] = useState("");
+  let countriesPerPage = 10;
 
+  // API request
   useEffect(() => {
     const getCountries = async () => {
       setLoading(true);
       const res = await axios.get("https://restcountries.com/v3.1/all");
       setCountries(res.data);
       setLoading(false);
+      console.log(letter);
     };
     getCountries();
-  }, []);
+  }, [letter]);
 
-  const lastCountryIndex = currentPage * countriesPerPage;
-  const firstCountryIndex = lastCountryIndex - countriesPerPage;
-  const currentCountry = countries.slice(firstCountryIndex, lastCountryIndex);
+  // declare first and last indexs of countries on page
+  let lastIndex = currentPage * countriesPerPage;
+  let firstIndex = lastIndex - countriesPerPage;
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  // filter countries by letter
+  let filteredCountries = countries.filter(
+    (item) => item.name.common[0] === letter,
+  );
+
+  // set countries on page
+  let currentCountries =
+  letter === ""                    // if first letter is not declared
+  ? countries.slice(firstIndex, lastIndex)   //then make slice on countries
+  : filteredCountries.slice(firstIndex, lastIndex); // if first letter declared, then slice on filtered one
+
+  
+  // get quantity of pagination pages
+  let quantityOfPages =
+    letter === ""                 //if there is no letter setting    
+      ? Math.ceil(countries.length / countriesPerPage) //then
+      : Math.ceil(filteredCountries.length / countriesPerPage); //otherwise
+
+
+  // logic for next and previous page click
+  const nextPage = (num) => {
+    setCurrentPage(num + 1);
   };
 
-  const nextPage = () => {
-    setCurrentPage((current) => current + 1);
+  const previousPage = (num) => {
+    setCurrentPage(num - 1);
   };
 
-  const prevPage = () => {
-    setCurrentPage((current) => current - 1);
-  };
+
 
   return (
     <div className="App">
       <div className="container w-4/5 mx-auto">
-        <h1 className=" text-blue-500 mt-4 font-bold text-2xl">Countries</h1>
-        <Countries currentCountry={currentCountry} loading={loading} />
-        <Pagination
-          countriesPerPage={countriesPerPage}
-          totalCountries={countries.length}
-          paginate={paginate}
+        <h1 className="mt-2 text-blue-500 font-semibold text-2xl">Countries</h1>
+        <ByLetter setLetter={setLetter} />
+        <Countries
+          countries={currentCountries}
+          loading={loading}
         />
 
-        <div className="buttons flex justify-center items-center my-2">
+        <Pagination
+          quantityOfPages={quantityOfPages}
+          setCurrentPage={setCurrentPage}
+        />
+
+        <div className="controls flex justify-center items-center">
           <button
-            className="border-2 border-transparent bg-blue-500 p-1 mx-4 rounded-sm text-white hover:border-2 hover:border-blue-300"
-            onClick={prevPage}>
-            Prev Page
+            className=" text-3xl bg-blue-500 px-4 rounded-lg hover:bg-blue-300 mx-1"
+            onClick={() => previousPage(currentPage)}>
+            {" < "}
           </button>
           <button
-            className="border-2 border-transparent bg-blue-500 p-1 mx-12 rounded-sm text-white hover:border-2 hover:border-blue-300"
-            onClick={nextPage}>
-            Next Page
+            className=" text-3xl bg-blue-500 px-4 rounded-lg hover:bg-blue-300 mx-1"
+            onClick={() => nextPage(currentPage)}>
+            {" > "}
           </button>
         </div>
       </div>
