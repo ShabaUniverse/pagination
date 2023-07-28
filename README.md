@@ -1,3 +1,3 @@
 # Pagination
-Pure JavaScript. No libraries.
-
+- Pure JavaScript
+- No libraries
